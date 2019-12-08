@@ -6,12 +6,16 @@ class PostsController < ApplicationController
      @post = Post.find_by(id: params[:id])
   end 
   def new
+    @post = Post.new
   end 
   def create
     @post = Post.new(content: params[:content])
-    @post.save
-    
+    if @post.save
+      flash[:notice] = "投稿を作成しました"
     redirect_to("/posts/index")
+    else
+    render("posts/new")
+    end
   end 
   def edit
     @post = Post.find_by(id: params[:id])
@@ -19,7 +23,19 @@ class PostsController < ApplicationController
   def update
     @post = Post.find_by(id: params[:id])
     @post.content = params[:content]
-    @post.save
-    redirect_to("/posts/index")
+    if @post.save
+      # 変数flash[:notice]に指定されたメッセージを代入してください
+      flash[:notice] = "投稿を編集しました"
+      redirect_to("/posts/index")
+    else
+      render("posts/edit")
+    end
   end 
+  def destroy
+    # destroyアクションの中身を作成してください
+    @post = Post.find_by(id: params[:id])
+    @post.destroy
+    flash[:notice] = "投稿を削除しました"
+    redirect_to("/posts/index")
+  end
 end
