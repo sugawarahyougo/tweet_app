@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  before_action :authenticate_user
   def index
     @posts = Post.all.order(created_at: :desc)
   end
@@ -24,7 +25,7 @@ class PostsController < ApplicationController
     @post = Post.find_by(id: params[:id])
     @post.content = params[:content]
     if @post.save
-      # 変数flash[:notice]に指定されたメッセージを代入してください
+     
       flash[:notice] = "投稿を編集しました"
       redirect_to("/posts/index")
     else
@@ -32,7 +33,7 @@ class PostsController < ApplicationController
     end
   end 
   def destroy
-    # destroyアクションの中身を作成してください
+   
     @post = Post.find_by(id: params[:id])
     @post.destroy
     flash[:notice] = "投稿を削除しました"
